@@ -9,6 +9,7 @@ public class SnakeAndLadder {
     static final int LADDER=1;
     static final int SNAKE=2;
     static final int NO_PLAY=0;
+    static int totalDiceCount=0;
     static Random RANDOM  = new Random();
 
     //Rolling Dice Method
@@ -17,6 +18,8 @@ public class SnakeAndLadder {
         int DICE= (RANDOM.nextInt(6)+1);
 
         System.out.println("Dice Number="+DICE);
+       //dice rolls counting
+        totalDiceCount++;
         return DICE;
     }
 
@@ -34,19 +37,53 @@ public class SnakeAndLadder {
                 case LADDER:
                    int limit= playerPosition;
                    limit=limit+dice;
-                    if (limit<100){
-                        playerPosition = playerPosition + dice;
+
+                    if (limit==98 ){
+                        dice=2;
+                        playerPosition = limit + dice;
+                    }
+                    else if (limit==99){
+                        dice=1;
+                        playerPosition=limit+dice;
+
+                    }
+                    else if (limit==97){
+                        dice=3;
+                        playerPosition=limit+dice;
+
+                    }else if (limit==96){
+                        dice=4;
+                        playerPosition=limit+dice;
+
+                    }
+                    else if (limit==95){
+                        dice=5;
+                        playerPosition=limit+dice;
+
+                    }
+                    else if (limit==94){
+                        dice=6;
+                        playerPosition=limit+dice;
+
                     }
                     else{
-                        playerPosition=playerPosition;
+                        playerPosition=playerPosition+dice;
                     }
+
 
                     System.out.println("Player Position  " + playerPosition);
                     break;
                 case SNAKE:
-                    playerPosition = playerPosition - dice;
-                    if (playerPosition < 0) {
+
+                    if (playerPosition <= 0) {
                         playerPosition = STARTNG_POSITION;
+                    }
+                    else if(playerPosition>90){
+                        playerPosition=playerPosition;
+                    }
+                    else{
+                        playerPosition = playerPosition - dice;
+
                     }
                     System.out.println("Player Position  " + playerPosition);
                     break;
@@ -68,6 +105,7 @@ public class SnakeAndLadder {
             snakeAndLadder.gameplay();
 
             System.out.println("Congratulations... Player Wins!!");
+            System.out.println("total dice rounds is = " + totalDiceCount);
 
         }
 
