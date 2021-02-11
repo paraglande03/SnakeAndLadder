@@ -32,7 +32,15 @@ public class SnakeAndLadder {
             System.out.println("Action Taken--" + action);
             switch (action) {
                 case LADDER:
-                    playerPosition = playerPosition + dice;
+                   int limit= playerPosition;
+                   limit=limit+dice;
+                    if (limit<100){
+                        playerPosition = playerPosition + dice;
+                    }
+                    else{
+                        playerPosition=playerPosition;
+                    }
+
                     System.out.println("Player Position  " + playerPosition);
                     break;
                 case SNAKE:
@@ -58,6 +66,8 @@ public class SnakeAndLadder {
             SnakeAndLadder snakeAndLadder = new SnakeAndLadder();
 
             snakeAndLadder.gameplay();
+
+            System.out.println("Congratulations... Player Wins!!");
 
         }
 
