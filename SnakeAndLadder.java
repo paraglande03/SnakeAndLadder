@@ -1,113 +1,99 @@
 import java.util.Random;
 
 public class SnakeAndLadder {
+// Initializing variables and constants
+    static final int STARTING_POSITION = 0;
+    static  final int ENDING_POSITION = 100;
+    static final int LADDER = 1;
+    static final int SNAKE = 2;
+    static final int NOPLAY = 0;
+    static String TASK ;
+    static Random RANDOM = new Random();
 
-    // Intializing variables
-    static final int STARTNG_POSITION=0;
-    static final int ENDING_POSITION=100;
-    static final int PLAYER=1;
-    static final int LADDER=1;
-    static final int SNAKE=2;
-    static final int NO_PLAY=0;
-    static int totalDiceCount=0;
-    static Random RANDOM  = new Random();
-
-    //Rolling Dice Method
-    public int diceRoll(){
-
-        int DICE= (RANDOM.nextInt(6)+1);
-
-        System.out.println("Dice Number="+DICE);
-       //dice rolls counting
-        totalDiceCount++;
-        return DICE;
-    }
-
-    //Gameplay method
-    public void gameplay() {
-        int playerPosition = STARTNG_POSITION;
-
-         //Adding while for ending position
-        while (playerPosition < ENDING_POSITION) {
-
-            int dice = diceRoll();
+    public int gamePlay(int currentPosition, int DiceCount)
+    {
+    // Initializing Rolling Dice
+        if( currentPosition < ENDING_POSITION )
+        {
+            int DICE = (RANDOM.nextInt(6)+1);
+//Defining Snake, Ladder or no play
             int action = RANDOM.nextInt(3);
-            System.out.println("Action Taken--" + action);
-            switch (action) {
+            switch(action)
+            {
                 case LADDER:
-                   int limit= playerPosition;
-                   limit=limit+dice;
-
-                    if (limit==98 ){
-                        dice=2;
-                        playerPosition = limit + dice;
+                    if(currentPosition + DICE <= ENDING_POSITION)
+                    {
+                        currentPosition = currentPosition + DICE;
+                        TASK = "Ladder";
                     }
-                    else if (limit==99){
-                        dice=1;
-                        playerPosition=limit+dice;
-
-                    }
-                    else if (limit==97){
-                        dice=3;
-                        playerPosition=limit+dice;
-
-                    }else if (limit==96){
-                        dice=4;
-                        playerPosition=limit+dice;
-
-                    }
-                    else if (limit==95){
-                        dice=5;
-                        playerPosition=limit+dice;
-
-                    }
-                    else if (limit==94){
-                        dice=6;
-                        playerPosition=limit+dice;
-
-                    }
-                    else{
-                        playerPosition=playerPosition+dice;
-                    }
-
-
-                    System.out.println("Player Position  " + playerPosition);
                     break;
                 case SNAKE:
-
-                    if (playerPosition <= 0) {
-                        playerPosition = STARTNG_POSITION;
+                    if(currentPosition - DICE >= STARTING_POSITION)
+                    {
+                        currentPosition = currentPosition - DICE;
+                        TASK = "Snake";
                     }
-                    else if(playerPosition>90){
-                        playerPosition=playerPosition;
-                    }
-                    else{
-                        playerPosition = playerPosition - dice;
-
-                    }
-                    System.out.println("Player Position  " + playerPosition);
                     break;
-                case NO_PLAY:
-                    playerPosition = playerPosition;
-                    System.out.println("same position as before i.e " + playerPosition);
+                case NOPLAY:
+                    currentPosition = currentPosition;
+                    TASK = "noPlay";
                     break;
             }
-
+            System.out.println(" | Dice: "+DICE+" for "+TASK+" and Current Position : "+currentPosition+"| ");
         }
+        if(TASK == "Ladder" && currentPosition != ENDING_POSITION)
+        {
+            DiceCount = dice_Player(DiceCount);
+            gamePlay(currentPosition,DiceCount);
+        }
+        return currentPosition;
     }
-
-        public static void main (String[]args ){
-
-            System.out.println("Welcome to the game");
-
-            SnakeAndLadder snakeAndLadder = new SnakeAndLadder();
-
-            snakeAndLadder.gameplay();
-
-            System.out.println("Congratulations... Player Wins!!");
-            System.out.println("total dice rounds is = " + totalDiceCount);
-
+    // Dice count increment after every rolling dice
+    public int dice_Player(int diceCount)
+    {
+        diceCount++;
+        return diceCount;
+    }
+    // Game played by two players
+    public void TwoPlayers()
+    {
+        int Player1position = STARTING_POSITION ;
+        int Player2position = STARTING_POSITION ;
+        int dice_count = STARTING_POSITION ;
+        System.out.println("Game Started by two player");
+        while( Player1position < ENDING_POSITION && Player2position < ENDING_POSITION )
+        {
+            System.out.println("Player 1 :-  ");
+            Player1position = gamePlay(Player1position,dice_count);
+            dice_count = dice_Player(dice_count);
+            System.out.println("-------------------------------------------------------------------------------------------------- ");
+            if(Player1position == ENDING_POSITION)
+            {
+                break;
+            }
+            System.out.println("Player 2 :-  ");
+            Player2position = gamePlay(Player2position,dice_count);
+            dice_count = dice_Player(dice_count);
+            System.out.println("---------------------------------------------------------------------------------------------------");
         }
+        if(Player1position == ENDING_POSITION)
+        {
+            System.out.println();
+            System.out.println("Player 1 Won The Match ");
+        }
+        else if(Player2position == ENDING_POSITION)
+        {
+            System.out.println();
+            System.out.println("Player 2 Won The Match ");
+        }
+        System.out.println("Total Dice Count of both Players "+dice_count);
+    }
+    public static void main(String args[])
+    {   System.out.println("Welcome to snake and ladder game simulator");
+        SnakeAndLadder snakeAndLadder=new SnakeAndLadder();
+        snakeAndLadder.TwoPlayers();
+
+    }
 
 
 }
